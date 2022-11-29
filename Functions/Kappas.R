@@ -66,8 +66,6 @@ getKsAndPs = function(dataA, dataB, categories)
     ks = append(ks, cohenResult$kappa)
     ps = append(ps, cohenResult$plevel)
   }
-  print(paste("This are the Ks: ", ks, seq=""))
-  print(paste("This are the Ps: ", ps, seq=""))
   allData = rbind(allData, ks)
   allData = rbind(allData, ps)
   colnames(allData) = c(categories[1:17, 2])
