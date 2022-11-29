@@ -340,7 +340,6 @@ createSctucturedTableForIndicatorsExtraction = function(table, categories)
   }
   for(category in 1:(nrow(categories)-1))
   {
-    print(categories[category, 2])
     specificNames = append(specificNames, paste(categories[category, 2], "_dens"))
     specificNames = append(specificNames, paste(categories[category, 2], "_prior"))
     specificNames = append(specificNames, paste(categories[category, 2], "_ext_min"))
