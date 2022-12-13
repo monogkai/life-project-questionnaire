@@ -184,6 +184,7 @@ getXDens = function(participantData, goalsNumber, category)
 
 getXExtMean = function(participantData, goalsNumber, category)
 {
+  flag = 0
   x_ext_mean = 0
   currentAge = participantData[1,2]
   for(goal in 1:goalsNumber)
@@ -192,15 +193,22 @@ getXExtMean = function(participantData, goalsNumber, category)
     {
       if(str_contains(participantData[1,(goal*3) + 1], category))
       {
-        x_ext_mean = x_ext_mean + (participantData[1,(goal*3) + 2] - currentAge)
+        flag = 1
+        if(!is.na(participantData[(goal*3) + 2])){
+          x_ext_mean = x_ext_mean + (participantData[1,(goal*3) + 2] - currentAge)
+        }
       }
     }
   }
-  if(x_ext_mean == 0 | is.na(x_ext_mean))
+  if(flag == 0)
   {
     return ("")
   }
-  return (format(round(x_ext_mean/goalsNumber, 2), nsmall = 2))
+  if(x_ext_mean == 0)
+  {
+    return (0)
+  }
+  return (format(round(x_ext_mean/getXDens(participantData, goalsNumber, category), 2), nsmall = 2))
 }
 
 getXExtMed = function(participantData, goalsNumber, category)
@@ -272,6 +280,7 @@ getXExtMax = function(participantData, goalsNumber, category)
     {
       if(str_contains(participantData[1,(goal*3) + 1], category))
       {
+        flag = 1
         value = participantData[1,(goal*3) + 2] - currentAge
         if(is.na(participantData[1,(goal*3) + 2]))
         {
@@ -279,7 +288,6 @@ getXExtMax = function(participantData, goalsNumber, category)
         }
         if(value > x_ext_max)
         {
-          flag = 1
           x_ext_max = participantData[1,(goal*3) + 2] - currentAge
         }
       }
@@ -288,6 +296,10 @@ getXExtMax = function(participantData, goalsNumber, category)
   if(flag == 0)
   {
     return ("")
+  }
+  if(x_ext_max == 0)
+  {
+    return (0)
   }
   return (x_ext_max)
 }
@@ -310,6 +322,7 @@ getXPrior = function(participantData, goalsNumber, category)
 
 createSctucturedTableForIndicatorsExtraction = function(table, categories)
 {
+  library("sjmisc")
   indicatorsExtractionTable = data.frame()
   specificNames = c()
   for(participant in 1:nrow(table))
