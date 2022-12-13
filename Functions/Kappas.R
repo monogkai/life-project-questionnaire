@@ -62,9 +62,9 @@ getKsAndPs = function(dataA, dataB, categories)
     dataA1 = dataA[ , c(goal)]
     dataB1 = dataB[ , c(goal)]
     dataA1 = cbind(dataA1, dataB1)
-    cohenResult = cohen.kappa(x=dataA1)
-    ks = append(ks, cohenResult$kappa)
-    ps = append(ps, cohenResult$plevel)
+    cohenResult = kappa2(dataA1)
+    ks = append(ks, cohenResult$value)
+    ps = append(ps, cohenResult$p.value)
   }
   allData = rbind(allData, ks)
   allData = rbind(allData, ps)

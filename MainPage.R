@@ -9,35 +9,63 @@ source("Functions/Indianara.R")
 
 args = commandArgs(TRUE)
 switch(  
-  args[1],  
+  args[1], 
+  "step1" = {
+    
+  },
+  "step2" = {
+    coderName = args[2]
+    print(paste("Step 2"))
+    directory = paste(paste("Step2/",coderName, sep=""),"/", sep="")
+    categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
+    inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
+    tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
+    inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
+    nvivoContent = readAllNVivoFiles(directory, categories)
+    tableWithContentC = insertCategoriesToInputTableC(tableWithCategoriesColumns, nvivoContent, categories)
+    
+    outputDirectoryFile = paste(directory,"Analyzed_Data_", coderName ,".xlsx", sep="")
+    createExcel(tableWithContentC, outputDirectoryFile)
+  },
+  "step3" = {
+    print(paste("Step 3 - Agreement was selected!"))
+    coderName1 = args[2]
+    coderName2 = args[3]
+    categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
+    
+    datacoderName1 = readInputExcelFile(paste("Step2/", coderName1, "/Analyzed_Data_", coderName1 ,".xlsx", sep=""))
+    datacoderName2 = readInputExcelFile(paste("Step2/", coderName2, "/Analyzed_Data_", coderName2 ,".xlsx", sep=""))
+    
+    ##Generate Ks and Ps
+    candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
+    candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
+    kappas = getKsAndPs(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
+    createExcel(kappas, "Step3/Unified_Data.xlsx")
+    print(paste("Ks/Ps data created!"))
+  },
+  "step4" = {
+    #print(paste("Step 4 - Indicators was selected!"))
+    #categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
+    #nvivoContent = readAllNVivoFiles("Step2/Coder1/",categories)
+    #inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
+    #tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
+    #tableWithContentC = insertCategoriesToInputTableC(tableWithCategoriesColumns, nvivoContent, categories)
+    #createExcel(tableWithContentC, "Step4/Final_Data.xlsx")
+    #sctucturedTableForIndicatorsExtraction = createSctucturedTableForIndicatorsExtraction(tableWithContentC, categories)
+    #createExcel(sctucturedTableForIndicatorsExtraction, "Step4/Indicators.xlsx")
+    #print(paste("Indicators data created!"))
+    
+    print(paste("Step 4 - Indicators was selected!"))
+    categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
+    tableWithContent = readInputExcelFile("Step4/Final_Data.xlsx")
+    sctucturedTableForIndicatorsExtraction = createSctucturedTableForIndicatorsExtraction(tableWithContent, categories)
+    createExcel(sctucturedTableForIndicatorsExtraction, "Step4/Indicators.xlsx")
+    print(paste("Indicators data created!"))
+  },
   "indianara" = {
     indianaraData = readIndianaraFile("InputFiles/PV_Indianara.docx")
     cleanData = cleanIndianaraData(indianaraData)
     createExcel(cleanData, "OutputFiles/PV_Indianara.xlsx")
     print(paste("Indianara data created!"))
   },  
-  "indicators"= {
-    categories = readInputExcelFile("InputFiles/CategoriesEN.xlsx")
-    inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
-    inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-    sctucturedTableForIndicatorsExtraction = createSctucturedTableForIndicatorsExtraction(inputMoreCompletedWithExtraColumns, categories)
-    createExcel(sctucturedTableForIndicatorsExtraction, "OutputFiles/AllCategoriesInsertedInGoalsTable.xlsx")
-    print(paste("Indicators data created!"))
-  },
-  "ks"= {
-    categories = readInputExcelFile("InputFiles/CategoriesPT.xlsx")
-    inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
-    tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
-    inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-    nvivoContent = readAllNVivoFiles(categories)
-    tableWithContentC = insertCategoriesToInputTableC(tableWithCategoriesColumns, nvivoContent, categories)
-    
-    ##Generate Ks and Ps
-    candidateATableSctucturedForKappas = generateKsTable(tableWithContentC, categories)
-    candidateBTableSctucturedForKappas = generateKsTable(tableWithContentC, categories)
-    kappas = getKsAndPs(candidateATableSctucturedForKappas, candidateBTableSctucturedForKappas, categories)
-    createExcel(kappas, "OutputFiles/AllKsAndPs.xlsx")
-    print(paste("Ks data created!"))
-  }
 )
-
