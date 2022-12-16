@@ -1,6 +1,8 @@
 #Ignore Excel and Word files
 *.xlsx
 *.docx
+!CategoriesEN.xlsx
+!CategoriesPT.xlsx
 
 # History files
 .Rhistory
