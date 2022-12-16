@@ -16,7 +16,6 @@ removeNATable = function(table)
 
 addColumnToDataFrame = function(data, previous_label)
 {
-  library(tibble)
   data = data %>% add_column(label = NA, .after = previous_label)
   return (data)
 }
@@ -36,7 +35,6 @@ addColumnsToDataFrame = function(data)
 
 getCorrectCell = function(table, candidate, content)
 {
-  library("sjmisc")
   if(content == "Família. ")
   {
     content = "Familia. "

@@ -1,6 +1,5 @@
 getDens = function(participantData)
 {
-  
   for(goal in 1:15)
   {
     if(is.na(participantData[goal*3]))
@@ -322,7 +321,6 @@ getXPrior = function(participantData, goalsNumber, category)
 
 createSctucturedTableForIndicatorsExtraction = function(table, categories)
 {
-  library("sjmisc")
   indicatorsExtractionTable = data.frame()
   specificNames = c()
   for(participant in 1:nrow(table))

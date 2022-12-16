@@ -7,6 +7,17 @@ source("Functions/Tables.R")
 source("Functions/Indicators_Extraction.R")
 source("Functions/Indianara.R")
 
+##Import libraries
+library("xlsx")
+library("writexl")
+library("officer")
+library("sjmisc")
+library("irr")
+library("psych")
+library("lpSolve")
+library("tibble")
+
+##Console
 args = commandArgs(TRUE)
 switch(  
   args[1], 
@@ -22,7 +33,7 @@ switch(
     tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
     inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
     nvivoContent = readAllNVivoFiles(directory, categories)
-    tableWithContentC = insertCategoriesToInputTableC(tableWithCategoriesColumns, nvivoContent, categories)
+    tableWithContentC = insertCategoriesToInputTableWithCategory(tableWithCategoriesColumns, nvivoContent, categories)
     
     outputDirectoryFile = paste(directory,"Analyzed_Data_", coderName ,".xlsx", sep="")
     createExcel(tableWithContentC, outputDirectoryFile)
@@ -49,7 +60,7 @@ switch(
     #nvivoContent = readAllNVivoFiles("Step2/Coder1/",categories)
     #inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
     #tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
-    #tableWithContentC = insertCategoriesToInputTableC(tableWithCategoriesColumns, nvivoContent, categories)
+    #tableWithContentC = insertCategoriesToInputTable(tableWithCategoriesColumns, nvivoContent, categories)
     #createExcel(tableWithContentC, "Step4/Final_Data.xlsx")
     #sctucturedTableForIndicatorsExtraction = createSctucturedTableForIndicatorsExtraction(tableWithContentC, categories)
     #createExcel(sctucturedTableForIndicatorsExtraction, "Step4/Indicators.xlsx")

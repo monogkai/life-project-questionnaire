@@ -1,6 +1,4 @@
 readNVivoFile = function(fileName, directory){
-  ##Read File
-  library(officer)
   print(paste("Reading ", fileName," file"))
   sample_data = read_docx(fileName)
   content = docx_summary(sample_data)$text
@@ -33,8 +31,6 @@ addSpaces = function(list)
 
 readWrongNVivoFile = function(fileName)
 {
-  library(officer)
-  library("sjmisc")
   sample_data = read_docx(fileName)
   content = docx_summary(sample_data)$text
   myList = c()
