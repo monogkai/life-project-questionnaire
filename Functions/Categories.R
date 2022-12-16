@@ -9,6 +9,23 @@ getAbreviation = function(categories, category)
   }
 }
 
+addAsterisk = function(table, position1, position2)
+{
+  if(!str_contains(table[position1, position2], "*"))
+  {
+    table[position1, position2] = paste( "*", table[position1, position2], sep = "")
+    if(!str_contains(colnames(table)[position2], "*"))
+    {
+      colnames(table)[position2] = paste ("*", colnames(table)[position2], sep = "")
+    }
+    if(!str_contains(table[position1, 1], "*"))
+    {
+      table[position1, 1] = paste ("*", table[position1, 1], sep = "")
+    }
+  }
+  return (table)
+}
+
 editCellPosition = function(table, position, category)
 {
   if(is.na(table[position[1], position[2]]))
@@ -17,6 +34,7 @@ editCellPosition = function(table, position, category)
   }else
   {
     table[position[1], position[2]] = paste(paste(table[position[1], position[2]], ", ", sep = ""), category, sep = "")
+    table = addAsterisk(table, position[1], position[2]);
   }
   return (table)
 }
@@ -35,7 +53,7 @@ insertCategoriesToInputTable = function(inputTable, wordContent, categories)
   return(editedTable)
 }
 
-insertCategoriesToInputTableC = function(inputTable, wordContent, categories)
+insertCategoriesToInputTableWithCategory = function(inputTable, wordContent, categories)
 {
   editedTable = inputTable
   for(x in 1:(length(wordContent)/3))
