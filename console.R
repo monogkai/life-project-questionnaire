@@ -29,7 +29,7 @@ switch(
     print(paste("Step 2"))
     directory = paste(paste("Step2/",coderName, sep=""),"/", sep="")
     categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-    inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
+    inputMoreCompleted = readInputExcelFile(paste(directory, "InputMoreCompleted.xlsx", sep=""))
     tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
     inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
     nvivoContent = readAllNVivoFiles(directory, categories)
