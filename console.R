@@ -22,7 +22,9 @@ args = commandArgs(TRUE)
 switch(  
   args[1], 
   "step1" = {
-    
+    inputMoreCompleted = readInputExcelFile("Step1/Row_Data.xlsx")
+    indianaraData = organizeDataToCreateIndianara(inputMoreCompleted)
+    createNVivoInput(indianaraData, "Step1/NVivo_Input.docx")
   },
   "step2" = {
     coderName = args[2]
@@ -74,9 +76,10 @@ switch(
     print(paste("Indicators data created!"))
   },
   "indianara" = {
-    indianaraData = readIndianaraFile("InputFiles/PV_Indianara.docx")
+    print(paste("Indianara was selected!"))
+    indianaraData = readIndianaraFile("Step1/NVivo_Input.docx")
     cleanData = cleanIndianaraData(indianaraData)
-    createExcel(cleanData, "OutputFiles/PV_Indianara.xlsx")
+    createExcel(cleanData, "Step1/PV_Indianara.xlsx")
     print(paste("Indianara data created!"))
   },  
 )
