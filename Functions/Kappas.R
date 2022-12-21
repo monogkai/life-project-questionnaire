@@ -20,7 +20,6 @@ mergeTablesWithCategories = function(completedTable, completedTable2)
 
 generateKsTable = function(table, categories)
 {
-  library(sjmisc)
   data1 = data.frame()
   for(category in 1:17)
   {
@@ -51,9 +50,6 @@ generateKsTable = function(table, categories)
 
 getKsAndPs = function(dataA, dataB, categories)
 {
-  library("irr")
-  library("psych")
-  library("lpSolve")
   allData = data.frame()
   ks = c()
   ps = c()

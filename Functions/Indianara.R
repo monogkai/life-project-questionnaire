@@ -1,7 +1,4 @@
 readIndianaraFile = function(fileName){
-  ##Read File
-  library(officer)
-  
   sample_data = read_docx(fileName)
   content = docx_summary(sample_data)$text
   return (content)

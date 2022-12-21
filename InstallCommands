@@ -1,6 +1,0 @@
-Install stuff:
-
-install.packages("officer")
-install.packages("xlsx")
-
-https://www.java.com/en/download/
