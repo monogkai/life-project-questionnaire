@@ -7,6 +7,38 @@ readIndianaraFile = function(fileName){
   return (content)
 }
 
+organizeDataToCreateIndianara = function(data)
+{
+  indianara = c()
+  for(line in 1:nrow(data))
+  {
+    for(column in 1:length(data))
+    {
+      if(is.na(data[line, (column * 2) + 1]))
+      {
+        break
+      }
+      indianara = append(indianara, paste("*id_", data[line, 1], seq=""))
+      indianara = append(indianara, "")
+      content = data[line, (column * 2) + 1]
+      indianara = append(indianara, substring(content,1, nchar(content)-1))
+      indianara = append(indianara, "")
+    }
+  }
+  return (indianara)
+}
+
+createNVivoInput = function(indianaraData, directory)
+{
+  doc = read_docx()
+  for(line in 1:length(indianaraData))
+  {
+    doc = doc %>% body_add_par(indianaraData[line])
+  }
+  print(doc, directory)
+  print(paste("The file", directory, "was created/modified."))
+}
+
 cleanIndianaraData = function(content){
   myList = c()
   indianara = data.frame()

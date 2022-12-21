@@ -7,22 +7,35 @@ source("Functions/Tables.R")
 source("Functions/Indicators_Extraction.R")
 source("Functions/Indianara.R")
 
+##Import libraries
+library("xlsx")
+library("writexl")
+library("officer")
+library("sjmisc")
+library("irr")
+library("psych")
+library("lpSolve")
+library("tibble")
+
+##Console
 args = commandArgs(TRUE)
 switch(  
   args[1], 
   "step1" = {
-    
+    inputMoreCompleted = readInputExcelFile("Step1/Row_Data.xlsx")
+    indianaraData = organizeDataToCreateIndianara(inputMoreCompleted)
+    createNVivoInput(indianaraData, "Step1/NVivo_Input.docx")
   },
   "step2" = {
     coderName = args[2]
     print(paste("Step 2"))
     directory = paste(paste("Step2/",coderName, sep=""),"/", sep="")
     categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-    inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
+    inputMoreCompleted = readInputExcelFile(paste(directory, "InputMoreCompleted.xlsx", sep=""))
     tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
     inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
     nvivoContent = readAllNVivoFiles(directory, categories)
-    tableWithContentC = insertCategoriesToInputTableC(tableWithCategoriesColumns, nvivoContent, categories)
+    tableWithContentC = insertCategoriesToInputTableWithCategory(tableWithCategoriesColumns, nvivoContent, categories)
     
     outputDirectoryFile = paste(directory,"Analyzed_Data_", coderName ,".xlsx", sep="")
     createExcel(tableWithContentC, outputDirectoryFile)
@@ -49,7 +62,7 @@ switch(
     #nvivoContent = readAllNVivoFiles("Step2/Coder1/",categories)
     #inputMoreCompleted = readInputExcelFile("InputFiles/InputMoreCompleted.xlsx")
     #tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
-    #tableWithContentC = insertCategoriesToInputTableC(tableWithCategoriesColumns, nvivoContent, categories)
+    #tableWithContentC = insertCategoriesToInputTable(tableWithCategoriesColumns, nvivoContent, categories)
     #createExcel(tableWithContentC, "Step4/Final_Data.xlsx")
     #sctucturedTableForIndicatorsExtraction = createSctucturedTableForIndicatorsExtraction(tableWithContentC, categories)
     #createExcel(sctucturedTableForIndicatorsExtraction, "Step4/Indicators.xlsx")
@@ -63,9 +76,10 @@ switch(
     print(paste("Indicators data created!"))
   },
   "indianara" = {
-    indianaraData = readIndianaraFile("InputFiles/PV_Indianara.docx")
+    print(paste("Indianara was selected!"))
+    indianaraData = readIndianaraFile("Step1/NVivo_Input.docx")
     cleanData = cleanIndianaraData(indianaraData)
-    createExcel(cleanData, "OutputFiles/PV_Indianara.xlsx")
+    createExcel(cleanData, "Step1/PV_Indianara.xlsx")
     print(paste("Indianara data created!"))
   },  
 )
