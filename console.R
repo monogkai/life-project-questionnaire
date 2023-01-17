@@ -1,11 +1,12 @@
 ##Import files
+source("Functions/Indianara.R")
 source("Functions/NVivo.R")
 source("Functions/Kappas.R")
 source("Functions/Excel.R")
 source("Functions/Categories.R")
 source("Functions/Tables.R")
 source("Functions/Indicators_Extraction.R")
-source("Functions/Indianara.R")
+source("Functions/HandleWrongData.R")
 
 ##Import libraries
 library("xlsx")
@@ -53,7 +54,10 @@ switch(
     candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
     candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
     kappas = getKsAndPs(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
-    createExcel(kappas, "Step3/Unified_Data.xlsx")
+    merge = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
+    createExcel(merge, "Step3/Unified_Data.xlsx")
+    print(paste(" Unified_Data created!"))
+    createExcel(kappas, "Step3/Kappa.xlsx")
     print(paste("Ks/Ps data created!"))
   },
   "step4" = {
