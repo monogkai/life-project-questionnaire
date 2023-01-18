@@ -30,8 +30,7 @@ mergeTablesWithAsterisks = function(datacoderF, datacoderS)
       }
       if(!is.na(datacoderF[row, c]) & !is.na(datacoderS[row, c]) & datacoderF[row, c] != datacoderS[row, c])
       {
-        x4 = removeReplication(datacoderF[row, c], datacoderS[row, c])
-        table[row, c] = x4
+        table[row, c] = removeReplication(datacoderF[row, c], datacoderS[row, c])
         table = addAsterisk(table, row, c)
       }
       if(str_contains(table[row, c], ",") & !str_contains(table[row, c], "*"))
@@ -50,46 +49,12 @@ removeReplication = function(content1, content2)
   unique_list_categories = unique(c(list_categories_content1, list_categories_content2))
   
   unique_list_categories_with_commas = paste(unique_list_categories, collapse=", ")
-  paste(print(unique_list_categories_with_commas))
   return (unique_list_categories_with_commas)
-}
-
-removeNATable = function(table)
-{
-  newTable = table
-  for(row in 1:nrow(table))
-  {
-    for(column in 1:length((table)))
-    {
-      if(is.na(table[row, column]))
-      {
-        newTable[row, column] = ""
-      }
-    }
-  }
-  return(newTable)
-}
-
-addColumnToDataFrame = function(data, previous_label)
-{
-  data = data %>% add_column(label = NA, .after = previous_label)
-  return (data)
-}
-
-addColumnsToDataFrame = function(data)
-{
-  for(x in 1:15)
-  {
-    data = addColumnToDataFrame(data, paste('LPS_goal', paste(x,'_content', sep=""), sep=""))
-    colnames(data)[(3*x) + 1] = paste('LPS_goal', paste(x,'_category', sep=""), sep="")
-  }
-  return (data)
 }
 
 getCorrectCell = function(table, candidate, content)
 {
   candidate = correctWrongCandidate(candidate)
-  content = correctWrongContent(content)
   for(row in 1:nrow(table))
   {
     if(table[row, 1] == candidate)

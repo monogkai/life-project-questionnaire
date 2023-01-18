@@ -1,29 +1,3 @@
-mergeTablesWithCategories = function(completedTable, completedTable2)
-{
-  mergedtable = completedTable
-  numberCandidates = nrow(completedTable)
-  for(candidate in 1:numberCandidates)
-  {
-    numberColumns = ((length(completedTable)-2)/3)
-    for(goal in 1:numberColumns)
-    {
-      currentColumn = (goal*3)+1
-      if(!is.na(completedTable2[candidate,currentColumn]))
-      {
-        if(is.na(completedTable[candidate,currentColumn]) && !is.na(completedTable2[candidate,currentColumn]))
-        {
-          mergedtable[candidate,currentColumn] = completedTable2[candidate,currentColumn]
-        }
-        else if(completedTable[candidate,currentColumn] != completedTable2[candidate, currentColumn])
-        {
-          mergedtable[candidate,currentColumn] = paste(mergedtable[candidate,currentColumn], paste(', ', completedTable2[candidate, currentColumn], sep=""), sep="")
-        }
-      }
-    }
-  }
-  return (mergedtable)
-}
-
 generateKsTable = function(table, categories)
 {
   data1 = data.frame()

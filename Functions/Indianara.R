@@ -4,9 +4,9 @@ readIndianaraFile = function(fileName){
   return (content)
 }
 
-organizeDataToCreateIndianara = function(data)
+organizeDataToCreateNvivoInput = function(data)
 {
-  indianara = c()
+  nvivoInput = c()
   for(line in 1:nrow(data))
   {
     for(column in 1:length(data))
@@ -15,14 +15,14 @@ organizeDataToCreateIndianara = function(data)
       {
         break
       }
-      indianara = append(indianara, paste("*id_", data[line, 1], seq=""))
-      indianara = append(indianara, "")
+      nvivoInput = append(nvivoInput, paste("*id_", data[line, 1], seq=""))
+      nvivoInput = append(nvivoInput, "")
       content = data[line, (column * 2) + 1]
-      indianara = append(indianara, substring(content,1, nchar(content)-1))
-      indianara = append(indianara, "")
+      nvivoInput = append(nvivoInput, substring(content,1, nchar(content)-1))
+      nvivoInput = append(nvivoInput, "")
     }
   }
-  return (indianara)
+  return (nvivoInput)
 }
 
 createNVivoInput = function(indianaraData, directory)

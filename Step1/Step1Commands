@@ -1,1 +1,5 @@
-Step1 Commands
+Prerequisites:
+- Step1/Raw_Data.xlsx
+
+Commands:
+- Rscript console.R step1
