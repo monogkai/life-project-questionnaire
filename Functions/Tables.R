@@ -42,6 +42,22 @@ mergeTablesWithAsterisks = function(datacoderF, datacoderS)
   return (table)
 }
 
+addColumnToDataFrame = function(data, previous_label)
+{
+  data = data %>% add_column(label = NA, .after = previous_label)
+  return (data)
+}
+
+addColumnsToDataFrame = function(data)
+{
+  for(x in 1:15)
+  {
+    data = addColumnToDataFrame(data, paste('LPS_goal', paste(x,'_content', sep=""), sep=""))
+    colnames(data)[(3*x) + 1] = paste('LPS_goal', paste(x,'_category', sep=""), sep="")
+  }
+  return (data)
+}
+
 removeReplication = function(content1, content2)
 {
   list_categories_content1 = as.list(strsplit(gsub(" ", "", content1), ",")[[1]])
