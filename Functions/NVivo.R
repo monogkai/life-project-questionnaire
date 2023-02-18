@@ -1,8 +1,28 @@
+removeRepitedLines = function(content)
+{
+  newContent = content
+  for(x in 1:length(newContent))
+  {
+    a = length(newContent)
+    y = x + 1
+    if(!is.na(newContent[x]) && !is.na(newContent[x+1]) && a != y && x != y)
+    {
+      if(newContent[x] == "" && newContent[x+1] == "")
+      {
+        newContent = newContent[-x]
+        x = x + 1;
+      }
+    }
+  }
+  return (newContent)
+}
+
 readNVivoFile = function(fileName, directory){
   print(paste("Reading ", fileName," file"))
   sample_data = read_docx(fileName)
-  content = docx_summary(sample_data)$text
+  cont = docx_summary(sample_data)$text
 
+  content = removeRepitedLines(cont)
   ##Select only the relevant content
   numReferences = (length(content) - 4)/5
   myList = c()
