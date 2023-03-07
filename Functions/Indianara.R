@@ -11,14 +11,14 @@ organizeDataToCreateNvivoInput = function(data)
   {
     for(column in 1:length(data))
     {
-      if(is.na(data[line, (column * 2) + 1]))
+      if(is.na(data[line, column + 1]))
       {
         break
       }
-      nvivoInput = append(nvivoInput, paste("*id_", data[line, 1], seq=""))
+      nvivoInput = append(nvivoInput, gsub(" ", "", paste("*id_", data[line, 1], seq="")))
       nvivoInput = append(nvivoInput, "")
-      content = data[line, (column * 2) + 1]
-      nvivoInput = append(nvivoInput, substring(content,1, nchar(content)-1))
+      content = data[line, column + 1]
+      nvivoInput = append(nvivoInput, substring(content,1, nchar(content)))
       nvivoInput = append(nvivoInput, "")
     }
   }
