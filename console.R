@@ -74,6 +74,10 @@ switch(
       candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
       kappas = getKsAndPsWithLabels(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
       createExcel(kappas, "Analysis/Kappa.xlsx")
+      
+      ##Generate Unified Data
+      unifiedData = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
+      createExcel(unifiedData, "Analysis/Unified_Data.xlsx")
     }
     else
     {
