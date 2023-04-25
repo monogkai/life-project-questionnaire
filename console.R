@@ -7,6 +7,7 @@ source("Functions/Categories.R")
 source("Functions/Tables.R")
 source("Functions/Indicators_Extraction.R")
 source("Functions/HandleWrongData.R")
+source("Functions/Locator.R")
 
 ##Import libraries
 library("xlsx")
@@ -18,15 +19,27 @@ library("psych")
 library("lpSolve")
 library("tibble")
 
+myLocator = "*loc_"
+
 ##Console
 args = commandArgs(TRUE)
 switch(  
   args[1], 
   "step1" = {
     print("Step 1 - Create NVivo Input data")
-    rawData = readInputExcelFile("Step1/Raw_Data.xlsx")
-    nvivoInputData = organizeDataToCreateNvivoInput(rawData)
-    createNVivoInput(nvivoInputData, "Step1/NVivo_Input.docx")
+    if(length(args) == 2)
+    {
+      print(paste("You added an extra argument: ", myLocator))
+      rawData = readInputExcelFile("Datasets/Raw_Data.xlsx")
+      nvivoInputData = organizeDataToCreateNvivoInputWithLocator(rawData, myLocator)
+      createNVivoInput(nvivoInputData, "Datasets/NVivo_Input.docx")
+    }
+    else
+    {
+      rawData = readInputExcelFile("Step1/Raw_Data.xlsx")
+      nvivoInputData = organizeDataToCreateNvivoInput(rawData)
+      createNVivoInput(nvivoInputData, "Step1/NVivo_Input.docx")
+    }
     print("Step 1 - Finished successfully")
   },
   "step2" = {
@@ -83,3 +96,4 @@ switch(
     print("Indianara data created!")
   },  
 )
+    
