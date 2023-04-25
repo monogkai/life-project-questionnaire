@@ -63,28 +63,40 @@ switch(
     coderName2 = args[3]
     print("Step 3 - Create Unified data and ks/ps")
     categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-    
-    datacoderName1 = readInputExcelFile(paste("Step2/", coderName1, "/Analyzed_Data_", coderName1 ,".xlsx", sep=""))
-    datacoderName2 = readInputExcelFile(paste("Step2/", coderName2, "/Analyzed_Data_", coderName2 ,".xlsx", sep=""))
-    
-    ##Generate Ks and Ps
-    candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
-    candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
-    kappas = getKsAndPs(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
-    createExcel(kappas, "Step3/Kappa.xlsx")
-    
-    ##Generate Unified Data
-    unifiedData = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
-    createExcel(unifiedData, "Step3/Unified_Data.xlsx")
+    if(length(args) == 4)
+    {
+      print(paste("You added an extra argument: ", myLocator))
+      datacoderName1 = readInputExcelFile(paste("Analysis/", coderName1, "/Data_", coderName1 ,".xlsx", sep=""))
+      datacoderName2 = readInputExcelFile(paste("Analysis/", coderName2, "/Data_", coderName2 ,".xlsx", sep=""))
+      
+      ##Generate Ks and Ps
+      candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
+      candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
+      kappas = getKsAndPsWithLabels(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
+      createExcel(kappas, "Analysis/Kappa.xlsx")
+    }
+    else
+    {
+      datacoderName1 = readInputExcelFile(paste("Step2/", coderName1, "/Analyzed_Data_", coderName1 ,".xlsx", sep=""))
+      datacoderName2 = readInputExcelFile(paste("Step2/", coderName2, "/Analyzed_Data_", coderName2 ,".xlsx", sep=""))
+      
+      ##Generate Ks and Ps
+      candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
+      candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
+      kappas = getKsAndPs(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
+      createExcel(kappas, "Step3/Kappa.xlsx")
+      
+      ##Generate Unified Data
+      unifiedData = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
+      createExcel(unifiedData, "Step3/Unified_Data.xlsx")
+    }
     print("Step 3 - Finished successfully")
   },
   "step4" = {
     print("Step 4 - Create Indicators")
     categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
     finalData = readInputExcelFile("Step4/Final_Data.xlsx")
-    
     indicators = createSctucturedTableForIndicatorsExtraction(finalData, categories)
-    
     createExcel(indicators, "Step4/Indicators.xlsx")
     print("Step 4 - Finished successfully")
   },
