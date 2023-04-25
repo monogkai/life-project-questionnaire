@@ -99,9 +99,19 @@ switch(
   "step4" = {
     print("Step 4 - Create Indicators")
     categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-    finalData = readInputExcelFile("Step4/Final_Data.xlsx")
-    indicators = createSctucturedTableForIndicatorsExtraction(finalData, categories)
-    createExcel(indicators, "Step4/Indicators.xlsx")
+    if(length(args) == 2)
+    {
+      print(paste("You added an extra argument: ", myLocator))
+      finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
+      indicators = createSctucturedTableForIndicatorsExtractionWithZeros(finalData, categories)
+      createExcel(indicators, "Analysis/Indicators.xlsx")
+    }
+    else
+    {
+      finalData = readInputExcelFile("Step4/Final_Data.xlsx")
+      indicators = createSctucturedTableForIndicatorsExtraction(finalData, categories)
+      createExcel(indicators, "Step4/Indicators.xlsx")
+    }
     print("Step 4 - Finished successfully")
   },
   "indianara" = {
