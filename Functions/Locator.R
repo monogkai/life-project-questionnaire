@@ -12,7 +12,7 @@ organizeDataToCreateNvivoInputWithLocator = function(data, mylocator)
         {
           break
         }
-        nvivoInput = append(nvivoInput, paste(gsub(" ", "", paste("*id_", data[line, 1], seq="")), mylocator,idx))
+        nvivoInput = append(nvivoInput, paste(gsub(" ", "", paste("*id_", data[line, 1], seq="")), paste(gsub(" ", "", paste(mylocator,idx)))))
         nvivoInput = append(nvivoInput, "")
         content = data[line, column]
         nvivoInput = append(nvivoInput, substring(content,1, nchar(content)))
