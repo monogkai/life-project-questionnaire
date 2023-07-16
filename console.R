@@ -84,12 +84,6 @@ switch(
       datacoderName1 = readInputExcelFile(paste("Analysis/", coderName1, "/Data_", coderName1 ,".xlsx", sep=""))
       datacoderName2 = readInputExcelFile(paste("Analysis/", coderName2, "/Data_", coderName2 ,".xlsx", sep=""))
       
-      ##Generate Ks and Ps
-      candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
-      candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
-      kappas = getKsAndPsWithLabels(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
-      createExcel(kappas, "Analysis/Kappa.xlsx")
-      
       ##Generate Unified Data
       unifiedData = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
       createExcel(unifiedData, "Analysis/Unified_Data.xlsx")
@@ -112,23 +106,39 @@ switch(
     print("Step 3 - Finished successfully")
   },
   "step4" = {
-    print("Step 4 - Create Indicators")
-    categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-    if(length(args) == 2)
+    if(length(args) == 4)
     {
+      coderName1 = args[2]
+      coderName2 = args[3]
+      categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
       print(paste("You added an extra argument: ", myLocator))
-      finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
-      indicators = createSctucturedTableForIndicatorsExtractionWithZeros(finalData, categories)
-      createExcel(indicators, "Analysis/Indicators.xlsx")
+      
+      datacoderName1 = readInputExcelFile(paste("Analysis/", coderName1, "/Data_", coderName1 ,".xlsx", sep=""))
+      datacoderName2 = readInputExcelFile(paste("Analysis/", coderName2, "/Data_", coderName2 ,".xlsx", sep=""))
+      
+      ##Generate Ks and Ps
+      candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
+      candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
+      kappas = getKsAndPsWithLabels(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
+      createExcel(kappas, "Analysis/Kappa.xlsx")
     }
     else
     {
+      print("Step 4 - Create Indicators")
+      categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
       finalData = readInputExcelFile("Step4/Final_Data.xlsx")
       indicators = createSctucturedTableForIndicatorsExtraction(finalData, categories)
       createExcel(indicators, "Step4/Indicators.xlsx")
     }
     print("Step 4 - Finished successfully")
   },
+  "step5" = {
+    print(paste("You added an extra argument: ", myLocator))
+    categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
+    finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
+    indicators = createSctucturedTableForIndicatorsExtractionWithZeros(finalData, categories)
+    createExcel(indicators, "Analysis/Indicators.xlsx")
+  }, 
   "indianara" = {
     print("Indianara was selected!")
     indianaraData = readIndianaraFile("Step1/NVivo_Input.docx")
