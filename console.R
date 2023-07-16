@@ -154,18 +154,9 @@ switch(
     dataCoder2 = readInputExcelFile("step2/Coder2/Data_Coder2.xlsx")
     finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
     
-    Data_Coder1_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder1, dataCoder1)
-    Data_Coder2_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder2, dataCoder2)
-    Final_Data_error = diffFile(inputMoreCompletedWithExtraColumns, testFinalData, finalData)
-    
-    outputDirectoryFile = paste("Step2/Coder1/Data_Coder1_error.xlsx", sep="")
-    createExcel(Data_Coder1_error, outputDirectoryFile)
-    
-    outputDirectoryFile = paste("Step2/Coder2/Data_Coder2_error.xlsx", sep="")
-    createExcel(Data_Coder2_error, outputDirectoryFile)
-    
-    outputDirectoryFile = paste("Datasets/Final_Data_error.xlsx", sep="")
-    createExcel(Final_Data_error, outputDirectoryFile)
+    Data_Coder1_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder1, dataCoder1, "Step2/Coder1/Data_Coder1_error.xlsx")
+    Data_Coder2_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder2, dataCoder2, "Step2/Coder2/Data_Coder2_error.xlsx")
+    Final_Data_error = diffFile(inputMoreCompletedWithExtraColumns, testFinalData, finalData, "Datasets/Final_Data_error.xlsx")
   },
   "indianara" = {
     print("Indianara was selected!")

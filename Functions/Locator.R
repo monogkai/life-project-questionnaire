@@ -181,8 +181,9 @@ insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, cate
   return(editedTable)
 }
 
-diffFile = function(tableWithCategories, testDataCoder, dataCoder)
+diffFile = function(tableWithCategories, testDataCoder, dataCoder, directory)
 {
+  error = FALSE
   for(line in 1:nrow(testDataCoder))
   {
     for(column in 1:length(testDataCoder))
@@ -194,10 +195,16 @@ diffFile = function(tableWithCategories, testDataCoder, dataCoder)
           if(testDataCoder[line, column] != dataCoder[line, column])
           {
             tableWithCategories[line, column] = "*"
+            error = TRUE
           }  
         }
       }
     }
+  }
+  if(error)
+  {
+    outputDirectoryFile = paste(directory, sep="")
+    createExcel(tableWithCategories, outputDirectoryFile)
   }
   return(tableWithCategories)
 }
