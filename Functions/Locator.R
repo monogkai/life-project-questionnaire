@@ -180,3 +180,24 @@ insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, cate
   }
   return(editedTable)
 }
+
+diffFile = function(tableWithCategories, testDataCoder, dataCoder)
+{
+  for(line in 1:nrow(testDataCoder))
+  {
+    for(column in 1:length(testDataCoder))
+    {
+      if(str_contains(colnames(testDataCoder)[column], "category"))
+      {
+        if(!is.na(testDataCoder[line, column]) && !is.na(dataCoder[line, column]))
+        {
+          if(testDataCoder[line, column] != dataCoder[line, column])
+          {
+            tableWithCategories[line, column] = "*"
+          }  
+        }
+      }
+    }
+  }
+  return(tableWithCategories)
+}

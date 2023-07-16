@@ -138,7 +138,35 @@ switch(
     finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
     indicators = createSctucturedTableForIndicatorsExtractionWithZeros(finalData, categories)
     createExcel(indicators, "Analysis/Indicators.xlsx")
-  }, 
+  },
+  "step6" = {
+    categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
+    
+    directory = paste(paste("Step2/","Coder1", sep=""),"/", sep="")
+    inputMoreCompleted = readInputExcelFile(paste("Datasets/", "Raw_Data.xlsx", sep=""))
+    inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
+    
+    testDataCoder1 = readInputExcelFile("step6/Data_Coder1.xlsx")
+    testDataCoder2 = readInputExcelFile("step6/Data_Coder2.xlsx")
+    testFinalData = readInputExcelFile("step6/Final_Data.xlsx")
+    
+    dataCoder1 = readInputExcelFile("step2/Coder1/Data_Coder1.xlsx")
+    dataCoder2 = readInputExcelFile("step2/Coder2/Data_Coder2.xlsx")
+    finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
+    
+    Data_Coder1_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder1, dataCoder1)
+    Data_Coder2_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder2, dataCoder2)
+    Final_Data_error = diffFile(inputMoreCompletedWithExtraColumns, testFinalData, finalData)
+    
+    outputDirectoryFile = paste("Step2/Coder1/Data_Coder1_error.xlsx", sep="")
+    createExcel(Data_Coder1_error, outputDirectoryFile)
+    
+    outputDirectoryFile = paste("Step2/Coder2/Data_Coder2_error.xlsx", sep="")
+    createExcel(Data_Coder2_error, outputDirectoryFile)
+    
+    outputDirectoryFile = paste("Datasets/Final_Data_error.xlsx", sep="")
+    createExcel(Final_Data_error, outputDirectoryFile)
+  },
   "indianara" = {
     print("Indianara was selected!")
     indianaraData = readIndianaraFile("Step1/NVivo_Input.docx")
