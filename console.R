@@ -46,16 +46,31 @@ switch(
     coderName = args[2]
     print("Step 2 - Create Analyzed data")
     directory = paste(paste("Step2/",coderName, sep=""),"/", sep="")
-    categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-    inputMoreCompleted = readInputExcelFile(paste(directory, "InputMoreCompleted.xlsx", sep=""))
-    tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
-    inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-    
-    nvivoContent = readAllNVivoFiles(directory, categories)
-    tableWithCategories = insertCategoriesToInputTableWithCategory(tableWithCategoriesColumns, nvivoContent, categories)
-    
-    outputDirectoryFile = paste(directory,"Analyzed_Data_", coderName ,".xlsx", sep="")
-    createExcel(tableWithCategories, outputDirectoryFile)
+    if(length(args) == 3)
+    {
+      print(paste("You added an extra argument: ", myLocator))
+      categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
+      inputMoreCompleted = readInputExcelFile(paste("Datasets/", "Raw_Data.xlsx", sep=""))
+      inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
+      nvivoContent = readAllNVivoFilesWithLocator(directory, categories)
+      tableWithCategories = insertCategoriesToInputTableWithLocator(inputMoreCompletedWithExtraColumns, nvivoContent, categories)
+      
+      outputDirectoryFile = paste(directory,"Data_", coderName ,".xlsx", sep="")
+      createExcel(tableWithCategories, outputDirectoryFile)
+    }
+    else
+    {
+      categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
+      inputMoreCompleted = readInputExcelFile(paste(directory, "InputMoreCompleted.xlsx", sep=""))
+      tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
+      inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
+      
+      nvivoContent = readAllNVivoFiles(directory, categories)
+      tableWithCategories = insertCategoriesToInputTableWithCategory(tableWithCategoriesColumns, nvivoContent, categories)
+      
+      outputDirectoryFile = paste(directory,"Analyzed_Data_", coderName ,".xlsx", sep="")
+      createExcel(tableWithCategories, outputDirectoryFile)
+    } 
     print("Step 2 - Finished successfully")
   },
   "step3" = {
@@ -122,4 +137,3 @@ switch(
     print("Indianara data created!")
   },  
 )
-    

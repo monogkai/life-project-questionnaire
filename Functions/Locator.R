@@ -95,3 +95,88 @@ createSctucturedTableForIndicatorsExtractionWithZeros = function(table, categori
   colnames(indicatorsExtractionTable) = c('id', 'dens', 'ext_min', 'ext_max', 'ext_mean', 'ext_med', 'n_maint', 'n_short', 'n_med', 'n_long', gsub(" ", "", specificNames))
   return (indicatorsExtractionTable)
 }
+
+getCorrectCellWithLocator = function(table, candidate, pos)
+{
+  for(row in 1:nrow(table))
+  {
+    if(table[row, 1] == candidate)
+    {
+      position = c(row, 1 + (3*strtoi(pos)))
+      return (position)
+    }
+  }
+  print(paste("ERROR: This phrase ", content, " don't exist in the table for the candidate ", candidate, sep=""))
+}
+
+readNVivoFileWithLocator = function(fileName, directory){
+  print(paste("Reading ", fileName," file"))
+  sample_data = read_docx(fileName)
+  cont = docx_summary(sample_data)$text
+  
+  content = removeRepitedLines(cont)
+  ##Select only the relevant content
+  numReferences = (length(content) - 4)/5
+  myList = c()
+  
+  for (x in 1:numReferences){
+    if(is.na(content[(6*x) - 1]))
+    {
+      browser
+      return(myList)
+    }
+    
+      myList = append(myList,substr(fileName, nchar(directory)+1, nchar(fileName)-5))
+      if(!str_contains(content[(6*x - 1)], "*id"))
+      {
+        if(str_contains(content[(6*x) - 1], "Referência"))
+        {
+          myList = append(myList,substr(content[(6*x) - 5], 5, 100))
+          myList = append(myList,substr(content[(6*x) - 3], 1, nchar(content[(6*x) - 1])))
+        }else
+        {
+          myList = append(myList,substr(content[(6*x) - 3], 5, 100))
+          myList = append(myList,substr(content[(6*x) - 1], 1, nchar(content[(6*x) - 1])))
+        }
+      }else
+      {
+        myList = append(myList,substr(content[(6*x) - 1], 5, 100))
+        myList = append(myList,substr(content[(6*x) + 1], 1, nchar(content[(6*x) + 1])))
+      } 
+  }
+  return (myList)
+}
+
+readAllNVivoFilesWithLocator = function(directory, categories){
+  content = c()
+  for(row in 1:nrow(categories))
+  {
+    if(categories[row,1] == "Outros e Inválidos")
+    {
+      next
+    }
+    fileDirectory = paste(paste(directory, categories[row,1],  sep = "" ), ".docx", sep = "")
+    content = append(content, readNVivoFileWithLocator(fileDirectory, directory))
+  }
+  return (content)
+}
+
+insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, categories)
+{
+  editedTable = inputTable
+  print(paste(wordContent))
+  for(x in 1:(length(wordContent)/3))
+  {
+    currentCategory = wordContent[(x*3) - 2]
+    #print(paste(currentCategory))
+    currentCandidate = substring(unlist(wordContent[(x*3) - 1]), 0, 8)
+    #print(paste(currentCandidate))
+    currentPosition = gsub(" ", "", substring(unlist(wordContent[(x*3) - 1]), 15))
+    #print(paste(currentPosition))
+    currentContent = unlist(wordContent[(x*3)])
+    position = getCorrectCellWithLocator(inputTable, currentCandidate, currentPosition)
+    #print(paste(position))
+    editedTable = editCellPosition(editedTable, position, getAbreviation(categories,currentCategory))
+  }
+  return(editedTable)
+}
