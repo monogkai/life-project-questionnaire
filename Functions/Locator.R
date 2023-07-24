@@ -122,7 +122,12 @@ readNVivoFileWithLocator = function(fileName, directory){
   for (x in 1:numReferences){
     if(is.na(content[(6*x) - 1]))
     {
-      browser
+      if(length(myList) != (numReferences*3) && !is.na(content[(6*x) - 5]) && !is.na(content[(6*x) - 3]))
+      {
+        myList = append(myList, substr(fileName, nchar(directory)+1, nchar(fileName)-5))
+        myList = append(myList, substr( content[(6*x) - 5], 5, 100))
+        myList = append(myList, substr(content[(6*x) - 3], 1, nchar(content[(6*x) - 3])))
+      }
       return(myList)
     }
     
