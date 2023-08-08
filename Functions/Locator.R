@@ -170,7 +170,7 @@ readAllNVivoFilesWithLocator = function(directory, categories){
 insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, categories)
 {
   editedTable = inputTable
-  print(paste(wordContent))
+  #print(paste(wordContent))
   for(x in 1:(length(wordContent)/3))
   {
     currentCategory = wordContent[(x*3) - 2]
