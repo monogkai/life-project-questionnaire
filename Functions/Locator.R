@@ -17,6 +17,7 @@ organizeDataToCreateNvivoInputWithLocator = function(data, mylocator)
         content = data[line, column]
         nvivoInput = append(nvivoInput, substring(content,1, nchar(content)))
         nvivoInput = append(nvivoInput, "")
+        nvivoInput = append(nvivoInput, "")
         flag = FALSE
         idx = idx + 1
       }else
@@ -40,7 +41,7 @@ getKsAndPsWithLabels = function(dataA, dataB, categories)
     dataA1 = cbind(dataA1, dataB1)
     cohenResult = kappa2(dataA1)
     ks = append(ks, cohenResult$value)
-    ps = append(ps, cohenResult$p.value)
+    ps = append(ps, sprintf(cohenResult$p.value, fmt = '%#.3f'))
   }
   allData = rbind(allData, ks)
   allData = rbind(allData, ps)

@@ -27,115 +27,56 @@ switch(
   args[1], 
   "step1" = {
     print("Step 1 - Create NVivo Input data")
-    if(length(args) == 2)
-    {
-      print(paste("You added an extra argument: ", myLocator))
-      rawData = readInputExcelFile("Datasets/Raw_Data.xlsx")
-      nvivoInputData = organizeDataToCreateNvivoInputWithLocator(rawData, myLocator)
-      createNVivoInput(nvivoInputData, "Datasets/NVivo_Input.docx")
-    }
-    else
-    {
-      rawData = readInputExcelFile("Step1/Raw_Data.xlsx")
-      nvivoInputData = organizeDataToCreateNvivoInput(rawData)
-      createNVivoInput(nvivoInputData, "Step1/NVivo_Input.docx")
-    }
+    rawData = readInputExcelFile("Datasets/Raw_Data.xlsx")
+    nvivoInputData = organizeDataToCreateNvivoInputWithLocator(rawData, myLocator)
+    createNVivoInput(nvivoInputData, "Datasets/NVivo_Input.docx")
     print("Step 1 - Finished successfully")
   },
   "step2" = {
     coderName = args[2]
     print("Step 2 - Create Analyzed data")
-    directory = paste(paste("Step2/",coderName, sep=""),"/", sep="")
-    if(length(args) == 3)
-    {
-      print(paste("You added an extra argument: ", myLocator))
-      categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
-      inputMoreCompleted = readInputExcelFile(paste("Datasets/", "Raw_Data.xlsx", sep=""))
-      inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-      nvivoContent = readAllNVivoFilesWithLocator(directory, categories)
-      tableWithCategories = insertCategoriesToInputTableWithLocator(inputMoreCompletedWithExtraColumns, nvivoContent, categories)
-      
-      outputDirectoryFile = paste(directory,"Data_", coderName ,".xlsx", sep="")
-      createExcel(tableWithCategories, outputDirectoryFile)
-    }
-    else
-    {
-      categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-      inputMoreCompleted = readInputExcelFile(paste(directory, "InputMoreCompleted.xlsx", sep=""))
-      tableWithCategoriesColumns = addColumnsToDataFrame(inputMoreCompleted)
-      inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-      
-      nvivoContent = readAllNVivoFiles(directory, categories)
-      tableWithCategories = insertCategoriesToInputTableWithCategory(tableWithCategoriesColumns, nvivoContent, categories)
-      
-      outputDirectoryFile = paste(directory,"Analyzed_Data_", coderName ,".xlsx", sep="")
-      createExcel(tableWithCategories, outputDirectoryFile)
-    } 
+    directory = paste(paste("Analysis/",coderName, sep=""),"/", sep="")
+    categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
+    inputMoreCompleted = readInputExcelFile(paste("Datasets/", "Raw_Data.xlsx", sep=""))
+    inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
+    nvivoContent = readAllNVivoFilesWithLocator(directory, categories)
+    tableWithCategories = insertCategoriesToInputTableWithLocator(inputMoreCompletedWithExtraColumns, nvivoContent, categories)
+    
+    outputDirectoryFile = paste(directory,"Data_", coderName ,".xlsx", sep="")
+    createExcel(tableWithCategories, outputDirectoryFile)
     print("Step 2 - Finished successfully")
   },
   "step3" = {
     coderName1 = args[2]
     coderName2 = args[3]
     print("Step 3 - Create Unified data and ks/ps")
-    categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-    if(length(args) == 4)
-    {
-      print(paste("You added an extra argument: ", myLocator))
-      datacoderName1 = readInputExcelFile(paste("Analysis/", coderName1, "/Data_", coderName1 ,".xlsx", sep=""))
-      datacoderName2 = readInputExcelFile(paste("Analysis/", coderName2, "/Data_", coderName2 ,".xlsx", sep=""))
-      
-      ##Generate Unified Data
-      unifiedData = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
-      createExcel(unifiedData, "Analysis/Unified_Data.xlsx")
-    }
-    else
-    {
-      datacoderName1 = readInputExcelFile(paste("Step2/", coderName1, "/Analyzed_Data_", coderName1 ,".xlsx", sep=""))
-      datacoderName2 = readInputExcelFile(paste("Step2/", coderName2, "/Analyzed_Data_", coderName2 ,".xlsx", sep=""))
-      
-      ##Generate Ks and Ps
-      candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
-      candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
-      kappas = getKsAndPs(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
-      createExcel(kappas, "Step3/Kappa.xlsx")
-      
-      ##Generate Unified Data
-      unifiedData = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
-      createExcel(unifiedData, "Step3/Unified_Data.xlsx")
-    }
+    categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
+    datacoderName1 = readInputExcelFile(paste("Analysis/", coderName1, "/Data_", coderName1 ,".xlsx", sep=""))
+    datacoderName2 = readInputExcelFile(paste("Analysis/", coderName2, "/Data_", coderName2 ,".xlsx", sep=""))
+    
+    ##Generate Unified Data
+    unifiedData = mergeTablesWithAsterisks(datacoderName1, datacoderName2)
+    createExcel(unifiedData, "Analysis/Unified_Data.xlsx")
     print("Step 3 - Finished successfully")
   },
   "step4" = {
-    if(length(args) == 4)
-    {
-      coderName1 = args[2]
-      coderName2 = args[3]
-      categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
-      print(paste("You added an extra argument: ", myLocator))
-      
-      datacoderName1 = readInputExcelFile(paste("Analysis/", coderName1, "/Data_", coderName1 ,".xlsx", sep=""))
-      datacoderName2 = readInputExcelFile(paste("Analysis/", coderName2, "/Data_", coderName2 ,".xlsx", sep=""))
-      
-      ##Generate Ks and Ps
-      candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
-      candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
-      kappas = getKsAndPsWithLabels(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
-      createExcel(kappas, "Analysis/Kappa.xlsx")
-    }
-    else
-    {
-      print("Step 4 - Create Indicators")
-      categories = readInputExcelFile("Categories/CategoriesPT.xlsx")
-      finalData = readInputExcelFile("Step4/Final_Data.xlsx")
-      indicators = createSctucturedTableForIndicatorsExtraction(finalData, categories)
-      createExcel(indicators, "Step4/Indicators.xlsx")
-    }
+    coderName1 = args[2]
+    coderName2 = args[3]
+    categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
+    datacoderName1 = readInputExcelFile(paste("Analysis/", coderName1, "/Data_", coderName1 ,".xlsx", sep=""))
+    datacoderName2 = readInputExcelFile(paste("Analysis/", coderName2, "/Data_", coderName2 ,".xlsx", sep=""))
+    
+    ##Generate Ks and Ps
+    candidate1TableSctucturedForKappas = generateKsTable(datacoderName1, categories)
+    candidate2TableSctucturedForKappas = generateKsTable(datacoderName2, categories)
+    kappas = getKsAndPsWithLabels(candidate1TableSctucturedForKappas, candidate2TableSctucturedForKappas, categories)
+    createExcel(kappas, "Analysis/Kappa.xlsx")
     print("Step 4 - Finished successfully")
   },
   "step5" = {
     print(paste("You added an extra argument: ", myLocator))
     categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
-    finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
+    finalData = readInputExcelFile("Analysis/Final_Data.xlsx")
     indicators = createSctucturedTableForIndicatorsExtractionWithZeros(finalData, categories)
     createExcel(indicators, "Analysis/Indicators.xlsx")
   },
