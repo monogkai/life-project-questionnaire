@@ -8,7 +8,7 @@ organizeDataToCreateNvivoInputWithLocator = function(data, mylocator)
     for(column in 3:length(data))
     {
       if(flag == TRUE){
-        if(is.na(data[line, column + 1] && is.na(data[line, column + 2])))
+        if(is.na(data[line, column + 1] && is.na(data[line, column + 2])) && is.na(data[line, column]))
         {
           break
         }
@@ -16,7 +16,6 @@ organizeDataToCreateNvivoInputWithLocator = function(data, mylocator)
         nvivoInput = append(nvivoInput, "")
         content = data[line, column]
         nvivoInput = append(nvivoInput, substring(content,1, nchar(content)))
-        nvivoInput = append(nvivoInput, "")
         nvivoInput = append(nvivoInput, "")
         flag = FALSE
         idx = idx + 1

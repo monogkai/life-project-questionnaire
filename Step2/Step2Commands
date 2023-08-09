@@ -1,9 +1,0 @@
-Prerequisites:
-- Step2/Coder1/InputMoreCompleted.xlsx
-- Step2/Coder2/InputMoreCompleted.xlsx
-- 17/18 nvivo files inside Step2/Coder1
-- 17/18 nvivo files inside Step2/Coder2
-
-Commands:
-- Rscript console.R step2 Coder1
-- Rscript console.R step2 Coder2

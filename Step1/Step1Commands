@@ -1,5 +1,0 @@
-Prerequisites:
-- Step1/Raw_Data.xlsx
-
-Commands:
-- Rscript console.R step1
