@@ -14,27 +14,9 @@ mergeTablesWithAsterisks = function(datacoderF, datacoderS)
       {
         table[row, c] =  datacoderS[row, c]
       }
-      if(is.na(datacoderF[row, c]) & !is.na(datacoderS[row, c]))
-      {
-        if(str_contains(datacoderS[row, c], ","))
-        {
-          table = addAsterisk(table, row, c)
-        }
-      }
-      if(is.na(datacoderS[row, c]) & !is.na(datacoderF[row, c]))
-      {
-        if(str_contains(datacoderF[row, c], ","))
-        {
-          table = addAsterisk(table, row, c)
-        }
-      }
       if(!is.na(datacoderF[row, c]) & !is.na(datacoderS[row, c]) & datacoderF[row, c] != datacoderS[row, c])
       {
         table[row, c] = removeReplication(datacoderF[row, c], datacoderS[row, c])
-        table = addAsterisk(table, row, c)
-      }
-      if(str_contains(table[row, c], ",") & !str_contains(table[row, c], "*"))
-      {
         table = addAsterisk(table, row, c)
       }
     }
