@@ -109,34 +109,34 @@ if(args[1] == "Create" && args[2] == "Input_NVivo")
 {
   print("Start Test Data_Coder1")
   
+  directory = "Analysis/Coder1/Data_Coder1.xlsx"
+  error_directory = "Analysis/Coder1/Data_Coder1_error.xlsx"
   categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
-  inputMoreCompleted = readInputExcelFile(paste("Datasets/", "Raw_Data.xlsx", sep=""))
-  inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-  dataCoder1 = readInputExcelFile("Analysis/Coder1/Data_Coder1.xlsx")
-  #Data_Coder1_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder1, dataCoder1, "Step2/Coder1/Data_Coder1_error.xlsx")
+  dataCoder1 = readInputExcelFile(directory)
+  data_Coder1_error = diffFile(dataCoder1, categories, error_directory)
   
   print("Finished Test Data_Coder1 successfully")
 }else if(args[1] == "Test" && args[2] == "Data_Coder2")
 {
   print("Start Test Data_Coder2")
   
+  directory = "Analysis/Coder2/Data_Coder2.xlsx"
+  error_directory = "Analysis/Coder2/Data_Coder2_error.xlsx"
   categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
-  inputMoreCompleted = readInputExcelFile(paste("Datasets/", "Raw_Data.xlsx", sep=""))
-  inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-  dataCoder2 = readInputExcelFile("Analysis/Coder2/Data_Coder2.xlsx")
-  #Data_Coder2_error = diffFile(inputMoreCompletedWithExtraColumns, testDataCoder2, dataCoder2, "Step2/Coder2/Data_Coder2_error.xlsx")
+  dataCoder2 = readInputExcelFile(directory)
+  data_Coder2_error = diffFile(dataCoder2, categories, error_directory)
   
   print("Finished Test Data_Coder2 successfully")
 }else if(args[1] == "Test" && args[2] == "Final_Data")
 {
   print("Start Test Final_Data")
   
+  directory = "Datasets/Final_Data.xlsx"
+  error_directory = "Datasets/Final_Data_error.xlsx"
   categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
-  inputMoreCompleted = readInputExcelFile(paste("Datasets/", "Raw_Data.xlsx", sep=""))
-  inputMoreCompletedWithExtraColumns = addColumnsToDataFrame(inputMoreCompleted)
-  finalData = readInputExcelFile("Datasets/Final_Data.xlsx")
-  #Final_Data_error = diffFile(inputMoreCompletedWithExtraColumns, testFinalData, finalData, "Datasets/Final_Data_error.xlsx")
-  
+  finalData = readInputExcelFile(directory)
+  final_Data_error = diffFile(finalData, categories, error_directory)
+
   print("Finished Test Final_Data successfully")
 }else
 {

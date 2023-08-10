@@ -186,30 +186,63 @@ insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, cate
   return(editedTable)
 }
 
-diffFile = function(tableWithCategories, testDataCoder, dataCoder, directory)
+diffFile = function(dataCoderTable, categories, directory)
 {
-  error = FALSE
-  for(line in 1:nrow(testDataCoder))
+  error = FALSE;
+  modifiedDataCoderTable = dataCoderTable;
+  for(line in 1:nrow(dataCoderTable))
   {
-    for(column in 1:length(testDataCoder))
+    for(column in 1:length(dataCoderTable))
     {
-      if(str_contains(colnames(testDataCoder)[column], "category"))
+      ##Category
+      if(str_contains(colnames(dataCoderTable)[column], "category") && !is.na(dataCoderTable[line, column]))
       {
-        if(!is.na(testDataCoder[line, column]) && !is.na(dataCoder[line, column]))
+        if(!grepl(",", dataCoderTable[line, column]))
         {
-          if(testDataCoder[line, column] != dataCoder[line, column])
+          matchCategory = FALSE;
+          for(category in 1:nrow(categories))
           {
-            tableWithCategories[line, column] = "*"
+            if(dataCoderTable[line, column] == categories[category, 2])
+            {
+              matchCategory = TRUE;
+              break;
+            }
+          }
+          if(!matchCategory)
+          {
             error = TRUE
-          }  
+            modifiedDataCoderTable = addAsterisk(modifiedDataCoderTable, line, column)
+          }
+        }else
+        {
+          occurances = unlist(strsplit(dataCoderTable[line, column], split=","))
+          for(occurance in 1:length(occurances))
+          {
+            matchCategory = FALSE;
+            for(category in 1:nrow(categories))
+            {
+              if(gsub(" ", "", occurances[occurance]) == categories[category, 2])
+              {
+                matchCategory = TRUE;
+                break;
+              }
+            }
+            if(!matchCategory)
+            {
+              error = TRUE
+              modifiedDataCoderTable = addAsterisk(modifiedDataCoderTable, line, column)
+            }
+          }
         }
       }
     }
   }
-  if(error)
+  if(!error)
   {
-    outputDirectoryFile = paste(directory, sep="")
-    createExcel(tableWithCategories, outputDirectoryFile)
+    print("No error was found!")
+  }else
+  {
+    createExcel(modifiedDataCoderTable, directory)
   }
-  return(tableWithCategories)
+  return(modifiedDataCoderTable)
 }
