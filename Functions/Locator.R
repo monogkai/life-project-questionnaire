@@ -186,6 +186,8 @@ insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, cate
   return(editedTable)
 }
 
+numbers_only = function(x) !grepl("\\D", x)
+
 diffFile = function(dataCoderTable, categories, directory)
 {
   error = FALSE;
@@ -233,6 +235,16 @@ diffFile = function(dataCoderTable, categories, directory)
               modifiedDataCoderTable = addAsterisk(modifiedDataCoderTable, line, column)
             }
           }
+        }
+      }
+      ##Age
+      if(str_contains(colnames(dataCoderTable)[column], "_age") && !is.na(dataCoderTable[line, column]) && !is.na(dataCoderTable[line, 2]) && numbers_only(dataCoderTable[line, column]))
+      {
+        currentAge = dataCoderTable[line, 2]
+        if(strtoi(dataCoderTable[line, column]) < strtoi(currentAge))
+        {
+          error = TRUE
+          modifiedDataCoderTable = addAsterisk(modifiedDataCoderTable, line, column)
         }
       }
     }
