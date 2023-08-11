@@ -166,19 +166,20 @@ readAllNVivoFilesWithLocator = function(directory, categories){
   return (content)
 }
 
-insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, categories)
+insertCategoriesToInputTableWithLocator = function(inputTable, wordContent, categories, myLocator)
 {
   editedTable = inputTable
-  #print(paste(wordContent))
   for(x in 1:(length(wordContent)/3))
   {
     currentCategory = wordContent[(x*3) - 2]
     #print(paste(currentCategory))
-    currentCandidate = substring(unlist(wordContent[(x*3) - 1]), 0, 8)
+    asteriskLocation = (unlist(gregexpr(myLocator, wordContent[(x*3) - 1]))[1])
+    currentCandidate = substring(unlist(wordContent[(x*3) - 1]), 0, asteriskLocation - 3)
     #print(paste(currentCandidate))
-    currentPosition = gsub(" ", "", substring(unlist(wordContent[(x*3) - 1]), 15))
+    currentPosition = substring(unlist(wordContent[(x*3) - 1]), asteriskLocation + nchar(myLocator) - 1, 15)
     #print(paste(currentPosition))
     currentContent = unlist(wordContent[(x*3)])
+    #print(paste(currentContent))
     position = getCorrectCellWithLocator(inputTable, currentCandidate, currentPosition)
     #print(paste(position))
     editedTable = editCellPosition(editedTable, position, getAbreviation(categories,currentCategory))
@@ -258,3 +259,4 @@ diffFile = function(dataCoderTable, categories, directory)
   }
   return(modifiedDataCoderTable)
 }
+
