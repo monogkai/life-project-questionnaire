@@ -48,10 +48,33 @@ getKsAndPsWithLabels = function(dataA, dataB, categories)
   return (allData)
 }
 
+removeCategoriesDuplicated = function(categories)
+{
+  categoriesNotDuplicated = categories[1, ]
+  for(category in 2:(nrow(categories)-1))
+  {
+    existsCategory = FALSE
+    for(categoryAdded in 1:(nrow(categoriesNotDuplicated)))
+    {
+      if(categoriesNotDuplicated[categoryAdded, 2] == categories[category, 2])
+      {
+        existsCategory = TRUE
+        break;
+      }
+    }
+    if(!existsCategory)
+    {
+      categoriesNotDuplicated[nrow(categoriesNotDuplicated) +1, ] = list(categories[category,1], categories[category,2])
+    }
+  }
+  return (categoriesNotDuplicated)
+}
+
 createSctucturedTableForIndicatorsExtractionWithZeros = function(table, categories)
 {
   indicatorsExtractionTable = data.frame()
   specificNames = c()
+  categories = removeCategoriesDuplicated(categories)
   for(participant in 1:nrow(table))
   {
     id = table[participant,1]
