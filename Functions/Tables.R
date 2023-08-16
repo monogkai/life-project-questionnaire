@@ -13,6 +13,11 @@ mergeTablesWithAsterisks = function(datacoderF, datacoderS)
       if(is.na(datacoderF[row, c]) & !is.na(datacoderS[row, c]))
       {
         table[row, c] =  datacoderS[row, c]
+        table = addAsterisk(table, row, c)
+      }
+      if(!is.na(datacoderF[row, c]) & is.na(datacoderS[row, c]))
+      {
+        table = addAsterisk(table, row, c)
       }
       if(!is.na(datacoderF[row, c]) & !is.na(datacoderS[row, c]) & datacoderF[row, c] != datacoderS[row, c])
       {
