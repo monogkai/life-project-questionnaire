@@ -89,7 +89,7 @@ createSctucturedTableForIndicatorsExtractionWithZeros = function(table, categori
     n_long = getNLong(table[participant,], dens)
     
     specificXMetric = c()
-    for(category in 1:(nrow(categories)-1))
+    for(category in 1:(nrow(categories)))
     {
       myDens = getXDens(table[participant,], dens, categories[category, 2])
       if(myDens == "")
@@ -106,7 +106,7 @@ createSctucturedTableForIndicatorsExtractionWithZeros = function(table, categori
     row = c(id, dens, ext_min, ext_max, ext_mean, ext_med, n_maint, n_short, n_med, n_long, specificXMetric)
     indicatorsExtractionTable = rbind(indicatorsExtractionTable, row)
   }
-  for(category in 1:(nrow(categories)-1))
+  for(category in 1:(nrow(categories)))
   {
     specificNames = append(specificNames, paste(categories[category, 2], "_dens"))
     specificNames = append(specificNames, paste(categories[category, 2], "_prior"))

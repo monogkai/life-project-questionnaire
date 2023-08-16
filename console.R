@@ -23,7 +23,7 @@ myLocator = "*loc_"
 
 ##Console
 args = commandArgs(TRUE)
-if(args[1] == "Create" && args[2] == "Input_NVivo")
+if(args[1] == "Create" && args[2] == "NVivo_Input")
 {
   print("Start Create Input_NVivo")
   
@@ -131,8 +131,8 @@ if(args[1] == "Create" && args[2] == "Input_NVivo")
 {
   print("Start Test Final_Data")
   
-  directory = "Datasets/Final_Data.xlsx"
-  error_directory = "Datasets/Final_Data_error.xlsx"
+  directory = "Analysis/Final_Data.xlsx"
+  error_directory = "Analysis/Final_Data_error.xlsx"
   categories = readInputExcelFile("Categories/CategoriesEN.xlsx")
   finalData = readInputExcelFile(directory)
   final_Data_error = diffFile(finalData, categories, error_directory)
